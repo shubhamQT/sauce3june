@@ -1,0 +1,6 @@
+{
+  "id": "c1336381-25b3-4947-97f6-5a4c07810412",
+  "title": "Product Listing & Add to Cart",
+  "content": "PS-001 — Product Listing & Add to Cart\nModule: Product Listing\nTags: regression, smoke\nPriority: High\n    \nDescription:\nVerify that a user can view the product list, sort products, and add items to the cart after logging into the application.\nAcceptance Criteria:\nUser should be able to login to the application (URL) with valid credentials.\nUser should be redirected to the inventory (product listing) page.\nUser should be able to view all available products on the page.\nUser should be able to see product name, price, description, and image.\nUser should be able to click \"Add to Cart\" button for a product.\nUser should be able to see cart icon updated with item count.\nUser should be able to click \"Remove\" button to remove product from cart.\nUser should be able to click on a product and navigate to product detail page.\nUser should be able to navigate back to product listing page.\n    \nTest Data:\nurl: https://www.saucedemo.com/\nusername: standard_user\npassword: secret_sauce\nproductName: Sauce Labs Backpack\n",
+  "createdAt": "2026-06-03T06:16:02.088Z"
+}

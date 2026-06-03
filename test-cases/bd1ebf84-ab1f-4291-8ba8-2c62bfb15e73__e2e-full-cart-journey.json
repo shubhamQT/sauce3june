@@ -1,0 +1,84 @@
+{
+  "id": "e2e-full-cart-journey",
+  "testPlanId": "bd1ebf84-ab1f-4291-8ba8-2c62bfb15e73",
+  "requirementId": "c1336381-25b3-4947-97f6-5a4c07810412",
+  "suiteName": "Product Listing & Add to Cart",
+  "case": {
+    "id": "e2e-full-cart-journey",
+    "title": "E2E: Login, add multiple products, view cart, remove item",
+    "priority": "P1",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "step1",
+        "action": "openUrl",
+        "targetDescription": "Navigate to login page",
+        "locatorHint": "https://www.saucedemo.com/",
+        "value": "https://www.saucedemo.com/"
+      },
+      {
+        "id": "step2",
+        "action": "fill",
+        "targetDescription": "Enter username",
+        "locatorHint": "[data-test='username']",
+        "value": "standard_user"
+      },
+      {
+        "id": "step3",
+        "action": "fill",
+        "targetDescription": "Enter password",
+        "locatorHint": "[data-test='password']",
+        "value": "secret_sauce"
+      },
+      {
+        "id": "step4",
+        "action": "tap",
+        "targetDescription": "Click login button",
+        "locatorHint": "[data-test='login-button']"
+      },
+      {
+        "id": "step5",
+        "action": "tap",
+        "targetDescription": "Add Sauce Labs Backpack to cart",
+        "locatorHint": "[data-test='add-to-cart-sauce-labs-backpack']"
+      },
+      {
+        "id": "step6",
+        "action": "tap",
+        "targetDescription": "Add Sauce Labs Bike Light to cart",
+        "locatorHint": "[data-test='add-to-cart-sauce-labs-bike-light']"
+      },
+      {
+        "id": "step7",
+        "action": "tap",
+        "targetDescription": "Click cart icon",
+        "locatorHint": ".shopping_cart_link"
+      },
+      {
+        "id": "step8",
+        "action": "assertVisible",
+        "targetDescription": "Verify both products are in cart",
+        "locatorHint": ".cart_item"
+      },
+      {
+        "id": "step9",
+        "action": "tap",
+        "targetDescription": "Remove Sauce Labs Backpack from cart",
+        "locatorHint": "[data-test='remove-sauce-labs-backpack']"
+      },
+      {
+        "id": "step10",
+        "action": "assertCount",
+        "targetDescription": "Verify only one product remains in cart",
+        "locatorHint": ".cart_item"
+      }
+    ],
+    "tags": [
+      "@e2e",
+      "@regression"
+    ]
+  }
+}
