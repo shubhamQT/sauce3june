@@ -1,0 +1,40 @@
+{
+  "id": "negative-add-to-cart-unauthenticated",
+  "testPlanId": "bd1ebf84-ab1f-4291-8ba8-2c62bfb15e73",
+  "requirementId": "c1336381-25b3-4947-97f6-5a4c07810412",
+  "suiteName": "Product Listing & Add to Cart",
+  "case": {
+    "id": "negative-add-to-cart-unauthenticated",
+    "title": "Attempt to add to cart without logging in",
+    "priority": "P1",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "step1",
+        "action": "openUrl",
+        "targetDescription": "Navigate directly to inventory page without login",
+        "locatorHint": "https://www.saucedemo.com/inventory.html",
+        "value": "https://www.saucedemo.com/inventory.html"
+      },
+      {
+        "id": "step2",
+        "action": "tap",
+        "targetDescription": "Attempt to click 'Add to Cart' for Sauce Labs Backpack",
+        "locatorHint": "[data-test='add-to-cart-sauce-labs-backpack']"
+      },
+      {
+        "id": "step3",
+        "action": "assertVisible",
+        "targetDescription": "Verify redirected to login or error message shown",
+        "locatorHint": "[data-test='login-button']"
+      }
+    ],
+    "tags": [
+      "@negative",
+      "@regression"
+    ]
+  }
+}
