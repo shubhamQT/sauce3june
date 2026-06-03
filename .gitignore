@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Playwright output
+test-results/
+playwright-report/
+logs/*.json
+logs/*.html
+logs/*.zip
+
+# Cloud execution — contain credentials, never commit
+execution/.env.execution
+browserstack.yml
+
+# Recorder artifacts
+.dom-captures/
+.git-users/
