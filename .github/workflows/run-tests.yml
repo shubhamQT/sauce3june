@@ -1,0 +1,96 @@
+# .github/workflows/run-tests.yml
+# Triggered by AutomationAI via workflow_dispatch.
+# Requires: Node.js, npm, and test dependencies installed.
+name: run-tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Feature branch to check out and run tests on"
+        required: false
+        default: ""
+      spec_paths:
+        description: "Space-separated spec file paths to run"
+        required: false
+        default: ""
+      environment:
+        description: "Environment slug (e.g. staging)"
+        required: false
+        default: ""
+      grep:
+        description: "Test title filter (e.g. @smoke)"
+        required: false
+        default: ""
+      callback_url:
+        description: "AutomationAI webhook URL to post results back"
+        required: true
+      run_id:
+        description: "AutomationAI run ID"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        env:
+          AUTOM_ENVIRONMENT: ${{ inputs.environment }}
+          TEST_ENV: ${{ inputs.environment }}
+        run: |
+          SPEC_PATHS_ARG="${{ inputs.spec_paths }}"
+          GREP_PATTERN="${{ inputs.grep }}"
+          if [ -n "$GREP_PATTERN" ]; then
+    npx playwright test $SPEC_PATHS_ARG --grep "$GREP_PATTERN"
+  else
+    npx playwright test $SPEC_PATHS_ARG
+  fi
+        continue-on-error: true
+        id: run
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ inputs.run_id }}
+          path: |
+            playwright-report/
+            logs/playwright-report.json
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Report results to AutomationAI
+        if: always()
+        run: |
+          STATUS="passed"
+          if [ "${{ steps.run.outcome }}" != "success" ]; then
+            STATUS="failed"
+          fi
+          curl -s -X POST "${{ inputs.callback_url }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"status\": \"${STATUS}\",
+              \"run_id\": \"${{ inputs.run_id }}\",
+              \"pipelineUrl\": \"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+            }" || true
